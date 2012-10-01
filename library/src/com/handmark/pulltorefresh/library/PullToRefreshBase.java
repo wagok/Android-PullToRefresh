@@ -1070,11 +1070,11 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
 			// If we're not at the target Y, keep going...
 			if (mContinueRunning && mScrollToY != mCurrentY) {
-				if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-					SDK16.postOnAnimation(PullToRefreshBase.this, this);
-				} else {
+//				if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+//					SDK16.postOnAnimation(PullToRefreshBase.this, this);
+//				} else {
 					postDelayed(this, ANIMATION_DELAY);
-				}
+//				}
 			}
 		}
 
