@@ -190,6 +190,7 @@ public class LoadingLayout extends FrameLayout {
 
 	public void setSubHeaderText(CharSequence label) {
 		if (TextUtils.isEmpty(label)) {
+		    
 			mSubHeaderText.setVisibility(View.GONE);
 		} else {
 			mSubHeaderText.setText(label);
@@ -198,7 +199,14 @@ public class LoadingLayout extends FrameLayout {
 	}
 
 	public void onPullY(float scaleOfHeight) {
-		mHeaderImageMatrix.setRotate(scaleOfHeight * 90, mRotationPivotX, mRotationPivotY);
+	    float angle = scaleOfHeight * 270 - 90;
+	    if (angle > 180) {
+	        angle = 180;
+	    }
+	    if (angle < 0) {
+	        angle = 0;
+	    }
+		mHeaderImageMatrix.setRotate(angle, mRotationPivotX, mRotationPivotY);
 		mHeaderImage.setImageMatrix(mHeaderImageMatrix);
 	}
 

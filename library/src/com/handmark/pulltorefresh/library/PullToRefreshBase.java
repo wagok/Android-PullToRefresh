@@ -98,6 +98,11 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	private OnRefreshListener2<T> mOnRefreshListener2;
 
 	private SmoothScrollRunnable mCurrentSmoothScrollRunnable;
+	
+	/**
+	 * Margin for left and right sides of header layout. 
+	 */
+	private int mMargin = 0;
 
 	// ===========================================================
 	// Constructors
@@ -702,8 +707,10 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 			removeView(mHeaderLayout);
 		}
 		if (mMode.canPullDown()) {
-			addViewInternal(mHeaderLayout, 0, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT));
+		    LinearLayout.LayoutParams llp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+		    llp.setMargins(mMargin, 0, mMargin, 0);
+			addViewInternal(mHeaderLayout, 0, llp);
 		}
 
 		// Remove Footer, and then add Footer Loading View again if needed
@@ -711,8 +718,10 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 			removeView(mFooterLayout);
 		}
 		if (mMode.canPullUp()) {
-			addViewInternal(mFooterLayout, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT));
+		    LinearLayout.LayoutParams llp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            llp.setMargins(mMargin, 0, mMargin, 0);
+			addViewInternal(mFooterLayout, 0, llp);
 		}
 
 		// Hide Loading Views
@@ -722,11 +731,23 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		// set it to pull down
 		mCurrentMode = (mMode != Mode.BOTH) ? mMode : Mode.PULL_DOWN_TO_REFRESH;
 	}
+	
+	/**
+	 * Set left and right margins for headerLayout.
+	 * @param margin - left and right margin in pixels.
+	 */
+	public void setLeftRightMargins(int margin) {
+	    mMargin = margin;
+	}
+	
+	public void updateHeaderFooterView() {
+	    updateUIForMode();
+	}
 
 	private void addRefreshableView(Context context, T refreshableView) {
 		mRefreshableViewWrapper = new FrameLayout(context);
 		mRefreshableViewWrapper.addView(refreshableView, ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT);
 		addViewInternal(mRefreshableViewWrapper, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1.0f));
 	}
 
